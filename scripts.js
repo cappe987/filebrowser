@@ -27,55 +27,19 @@ function listdir(data){
   const back = createFileButton("..");
   div.appendChild(back);
 
-  data.files.forEach(f => {
-    const button = createFileButton(f);
-    div.appendChild(button);
-  });
+  if (data.files != undefined){
+    data.files.forEach(f => {
+      const button = createFileButton(f);
+      div.appendChild(button);
+    });
+  }
 
 
 }
 
 function fetchFiles(foldername){
   const current = document.getElementById("currentDir").textContent;
-  let data = {dir: current + "/" + foldername}
-  // console.log("Foldername: " + foldername);
-  
-  if (current == "/") { //Already at root
-    data = {dir: current + foldername}
-  }
-
-  if (foldername.includes("..")){
-    // console.log(foldername);
-    if (current == "/"){
-      // console.log("Curr: " + current);
-      data = {dir: current}
-    }
-    else if (foldername === ".."){
-      let i = current.length - 1;
-      for (; i > 0 && current[i] != '/'; i--) {}
-      data = {dir: current.substring(0, i)}
-      if (data.dir == ""){data.dir = "/"}
-    }
-    else {
-      data = {dir: current}
-    }
-  }
-
-  // if (current == "/") { //Already at root
-  //   data = {dir: current + foldername}
-  //   if (foldername.includes("../")){ //Tries to go over root.
-  //     data = {dir: current}
-  //   }
-  // }
-  // else if (foldername === ".."){ //Going one directory up, remove previous directory
-  //   let i = current.length - 1;
-  //   for (; i > 0 && current[i] != '/'; i--) {}
-  //   data = {dir: current.substring(0, i)}
-  //   if (data.dir == ""){data.dir = "/"}
-  // }
-  // else if (foldername.includes("..")){ //Security. Tries to go up more than one directory.
-  //   data = {dir: current}
-  // }
+  const data = {current: current, folder: foldername};
 
   const options = {
     method: 'POST',

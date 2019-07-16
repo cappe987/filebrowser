@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>Directories</title>
+  <title>File Browser</title>
   <link rel="stylesheet" type="text/css" href="style.css">
   <meta charset="UTF-8">
   <script src="scripts.js"></script> 
@@ -8,33 +8,15 @@
 
 <body>
   <div class="title">
-    <h1>File system</h1>
+    <h1>File browser</h1>
     <h1 id="currentDir">/</h1>
   </div>
 
 
-  <div class="main" id="content">
-    <!-- <button class="file">index.html</button> -->
-    <!-- <button class="file">style.css</button> -->
-
-    <script>
-      fetchFiles("");
-      // const data = {dir: document.getElementById("currentDir").textContent};
-      // const options = {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(data)
-      // };
-      // fetch('/opendir', options)
-      // .then(res => res.json())
-      // .then(resdata => {
-      //   // console.log(resdata);
-      //   listdir(resdata);
-      // });
-    </script>
-
-  </div>
-
+  <div class="main" id="content"></div>
+  
 </body>
+
+<script>
+  fetchFiles("");
+</script>
