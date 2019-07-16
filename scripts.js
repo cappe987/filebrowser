@@ -44,14 +44,15 @@ function openFile(data){
 
   const div = document.getElementById("content");
   div.innerHTML = ""
+  // const lines = data.filecontent.split("\n").length;
 
-  const text = document.createElement("p");
-  // data.filecontent = data.filecontent.replace("\n", "<br>");
-  // Split on \n and post as separate <p> or just with <br> if possible
-  text.textContent = data.filecontent;
+  const textbox = document.createElement("textarea");
+  textbox.setAttribute("cols", "89");
+  textbox.setAttribute("rows", "40");
+  textbox.setAttribute("readonly", "readonly");
+  textbox.textContent = data.filecontent;
 
-  div.appendChild(text);
-
+  div.appendChild(textbox);
 }
 
 function fetchFiles(foldername){
@@ -75,7 +76,6 @@ function fetchFiles(foldername){
         listdir(resdata);
         break;
       case "textfile":
-        console.log(resdata.filecontent);
         openFile(resdata);
         break;
       default:
