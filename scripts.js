@@ -1,4 +1,11 @@
 
+function setTitle(text){
+  const title = document.getElementById("currentDir");
+  title.textContent = "";
+  const newtitle = document.createElement("h1");
+  newtitle.textContent = text;
+  title.appendChild(newtitle);
+}
 
 function createFileButton(filename) {
   const button = document.createElement("button");
@@ -11,15 +18,12 @@ function createFileButton(filename) {
 }
 
 function listdir(data){
-  if (data.status != "success"){
-    return;
-  }
-
-  const title = document.getElementById("currentDir");
-  title.textContent = "";
-  const newtitle = document.createElement("h1");
-  newtitle.textContent = data.newdir;
-  title.appendChild(newtitle);
+  // const title = document.getElementById("currentDir");
+  // title.textContent = "";
+  // const newtitle = document.createElement("h1");
+  // newtitle.textContent = data.newdir;
+  // title.appendChild(newtitle);
+  setTitle(data.newdir);
 
   const div = document.getElementById("content");
 
@@ -33,7 +37,20 @@ function listdir(data){
       div.appendChild(button);
     });
   }
+}
 
+function openFile(data){
+  setTitle(data.newdir);
+
+  const div = document.getElementById("content");
+  div.innerHTML = ""
+
+  const text = document.createElement("p");
+  // data.filecontent = data.filecontent.replace("\n", "<br>");
+  // Split on \n and post as separate <p> or just with <br> if possible
+  text.textContent = data.filecontent;
+
+  div.appendChild(text);
 
 }
 
@@ -53,6 +70,16 @@ function fetchFiles(foldername){
   .then(res => res.json())
   .then(resdata => {
     // console.log(resdata);
-    listdir(resdata);
+    switch (resdata.status){
+      case "directory":
+        listdir(resdata);
+        break;
+      case "textfile":
+        console.log(resdata.filecontent);
+        openFile(resdata);
+        break;
+      default:
+        break;
+    }
   });
 }

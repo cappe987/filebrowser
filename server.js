@@ -3,6 +3,7 @@ const fs      = require("fs"     );
 
 const app = express();
 const port = 3000;
+const rootdir = __dirname;
 
 app.use(express.static("."));
 app.use(express.json({limit: '1mb'}));
@@ -21,6 +22,19 @@ function ascendDir(path){
 }
 
 
+function sendDirectory(res, absolutepath, relativepath) {
+  fs.readdir(absolutepath, (err, files) => {
+    res.json({status: "directory", newdir: relativepath, files: files});
+  });
+
+}
+
+function openFile(res, absolutepath, relativepath) {
+  const promise = fs.readFile(absolutepath, "utf8", (err, contents) => {
+    res.json({status: "textfile", newdir: relativepath, filecontent: contents});
+  });
+}
+
 app.post('/opendir', (req, res) => {
   let current = req.body.current;
   let foldername = req.body.folder;
@@ -37,15 +51,19 @@ app.post('/opendir', (req, res) => {
       return; }
   }
 
-  const dir = __dirname + relativepath;
+  const dir = rootdir + relativepath;
   // const dir = "/" + relativepath;
   console.log(dir);
-
-  // fs.stat(__dirname + "/index.html", (err, stat) => {
-  //   console.log(stat.isFile());
-  // });
   
-  fs.readdir(dir, (err, files) => {
-    res.json({status: "success", newdir: relativepath, files: files});
+  fs.stat(dir, (err, stat) => {
+    if (stat.isFile()){
+      openFile(res, dir, relativepath);
+    }
+    else if (stat.isDirectory()){
+      sendDirectory(res, dir, relativepath);
+    }
   });
+
+
+  
 });
