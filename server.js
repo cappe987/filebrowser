@@ -3,8 +3,8 @@ const fs      = require("fs"     );
 
 const app = express();
 const port = 3000;
-// const rootdir = "/";
-const rootdir = __dirname;
+const rootdir = "/";
+// const rootdir = __dirname;
 
 app.use(express.static("."));
 app.use(express.json({limit: '1mb'}));
