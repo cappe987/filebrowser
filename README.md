@@ -21,3 +21,9 @@ The server is now accessible through the URL `localhost:3000`. The browser will 
 - [X] Image support
 - [ ] File download
 - [ ] File upload
+- [ ] Tree view
+- [ ] Favorites folder
+- [ ] Fuzzy searcher - Levenshtein distance?
+- [ ] Colors and themes for frontend
+- [ ] Docker?
+- [ ] Electron?
