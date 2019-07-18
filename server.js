@@ -1,70 +1,64 @@
 const express = require("express");
 const fs      = require("fs"     );
+const path    = require("path"   );
+const util    = require("util"   );
+
+const statAsync =     util.promisify(fs.stat    );
+const readFileAsync = util.promisify(fs.readFile);
+const readDirAsync  = util.promisify(fs.readdir );
 
 const app = express();
 const port = 3000;
-const rootdir = "/";
-// const rootdir = __dirname;
+// const rootdir = "/";
+const rootdir = __dirname;
 
 app.use(express.static("."));
 app.use(express.json({limit: '1mb'}));
 
 app.listen(port, () => console.log(`Listening to port ${port}`));
 
-
-function ascendDir(path){
-  let i = path.length - 1;
-  for (; i > 0 && path[i] != '/'; i--) {}
-  const newpath = path.substring(0, i);
-  if (newpath == ""){
-    return "/";
-  }
-  return newpath;
+function getExtension(absolutepath){
+  return path.extname(absolutepath).substring(1);
 }
 
-
-function sendDirectory(res, absolutepath, relativepath) {
-  fs.readdir(absolutepath, (err, files) => {
-    res.json({status: "directory", newdir: relativepath, files: files});
-  });
-
+function getFiletype(stat){
+  if (stat.isFile()){
+    return "textfile";
+  }
+  else if (stat.isDirectory()){
+    return "directory";
+  }
+  return "invalid";
 }
 
-function openFile(res, absolutepath, relativepath) {
-  const promise = fs.readFile(absolutepath, "utf8", (err, contents) => {
-    res.json({status: "textfile", newdir: relativepath, filecontent: contents});
-  });
-}
+app.post('/opendir', async (req, res) => {
 
-app.post('/opendir', (req, res) => {
-  let current = req.body.current;
-  let foldername = req.body.folder;
-  let relativepath = current + "/" + foldername 
-  
-  if (current == "/") { //Already at root
-    relativepath = current + foldername;
-  }
+  const relativepath = path.normalize(req.body.relativepath);
+  console.log("Relative: " + relativepath);
+  const absolutepath = path.join(rootdir, relativepath);
+  console.log("Absolute: " + absolutepath);
 
-  if (foldername.includes("..")){ //Ascending
-    if (foldername === ".."){ //Proper ascension
-      relativepath = ascendDir(current); }
-    else { //Invalid action
-      return; }
-  }
+  try{
+    const stat = await statAsync(absolutepath);
+    switch (getFiletype(stat)){
+      case "textfile" :
+        const contents = await readFileAsync(absolutepath, "utf8");
+        res.json({type: "textfile", newdir: relativepath, data: contents});
+        break;
 
-  const dir = rootdir + relativepath;
-  // const dir = "/" + relativepath;
-  console.log(dir);
-  
-  fs.stat(dir, (err, stat) => {
-    if (stat.isFile()){
-      openFile(res, dir, relativepath);
+      case "directory": 
+        const files = await readDirAsync(absolutepath);
+        res.json({type: "directory", newdir: relativepath, data: files});
+        break;
+
+      default:
+        console.log("Non-supported filetype");
+        return;
     }
-    else if (stat.isDirectory()){
-      sendDirectory(res, dir, relativepath);
-    }
-  });
-
-
-  
+  }
+  catch(e){ 
+    console.log("Caught Error: " + e); 
+    return;
+  }
 });
+

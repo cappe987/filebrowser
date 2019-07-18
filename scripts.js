@@ -7,32 +7,25 @@ function setTitle(text){
   title.appendChild(newtitle);
 }
 
-function createFileButton(filename) {
+function createFileButton(filename, fetchstring = filename) {
   const button = document.createElement("button");
   button.className = "file";
   button.textContent = filename;
   // const cmd = //`console.log("${filename}"); fetchFiles("${filename}")`;
-  const cmd = `fetchFiles("${filename}")`;
+  const cmd = `fetchFiles("${fetchstring}")`;
   button.setAttribute("onClick", cmd);
   return button;
 }
 
 function listdir(data){
-  // const title = document.getElementById("currentDir");
-  // title.textContent = "";
-  // const newtitle = document.createElement("h1");
-  // newtitle.textContent = data.newdir;
-  // title.appendChild(newtitle);
-  setTitle(data.newdir);
-
   const div = document.getElementById("content");
 
   div.innerHTML = ""
-  const back = createFileButton("..");
+  const back = createFileButton("..", "/..");
   div.appendChild(back);
 
-  if (data.files != undefined){
-    data.files.forEach(f => {
+  if (data.data != undefined){
+    data.data.forEach(f => {
       const button = createFileButton(f);
       div.appendChild(button);
     });
@@ -40,8 +33,6 @@ function listdir(data){
 }
 
 function openFile(data){
-  setTitle(data.newdir);
-
   const div = document.getElementById("content");
   div.innerHTML = ""
   // const lines = data.filecontent.split("\n").length;
@@ -50,14 +41,14 @@ function openFile(data){
   textbox.setAttribute("cols", "89");
   textbox.setAttribute("rows", "40");
   textbox.setAttribute("readonly", "readonly");
-  textbox.textContent = data.filecontent;
+  textbox.textContent = data.data;
 
   div.appendChild(textbox);
 }
 
-function fetchFiles(foldername){
+async function fetchFiles(foldername){
   const current = document.getElementById("currentDir").textContent;
-  const data = {current: current, folder: foldername};
+  const data = {relativepath: current + "/" + foldername};
 
   const options = {
     method: 'POST',
@@ -67,19 +58,20 @@ function fetchFiles(foldername){
     body: JSON.stringify(data)
   };
 
-  fetch('/opendir', options)
-  .then(res => res.json())
-  .then(resdata => {
-    // console.log(resdata);
-    switch (resdata.status){
-      case "directory":
-        listdir(resdata);
-        break;
-      case "textfile":
-        openFile(resdata);
-        break;
-      default:
-        break;
-    }
-  });
+  const response     = await fetch('/opendir', options)
+  const responsedata = await response.json();
+  setTitle(responsedata.newdir);
+  switch (responsedata.type){
+    case "directory":
+      listdir(responsedata);
+      break;
+    case "textfile":
+      openFile(responsedata);
+      break;
+    case "image":
+      // openFile(resdata);
+      break;
+    default:
+      break;
+  }
 }
