@@ -11,7 +11,6 @@ function createFileButton(filename, fetchstring = filename) {
   const button = document.createElement("button");
   button.className = "file";
   button.textContent = filename;
-  // const cmd = //`console.log("${filename}"); fetchFiles("${filename}")`;
   const cmd = `fetchFiles("${fetchstring}")`;
   button.setAttribute("onClick", cmd);
   return button;
@@ -38,12 +37,22 @@ function openFile(data){
   // const lines = data.filecontent.split("\n").length;
 
   const textbox = document.createElement("textarea");
-  textbox.setAttribute("cols", "89");
   textbox.setAttribute("rows", "40");
   textbox.setAttribute("readonly", "readonly");
   textbox.textContent = data.data;
 
   div.appendChild(textbox);
+}
+
+function openImage(data){
+  const div = document.getElementById("content");
+  div.innerHTML = ""
+
+  const img = document.createElement("img");
+  img.setAttribute("src", "/image/" + data.newdir);
+  img.style.maxWidth = "100%";
+
+  div.appendChild(img);
 }
 
 async function fetchFiles(foldername){
@@ -58,7 +67,7 @@ async function fetchFiles(foldername){
     body: JSON.stringify(data)
   };
 
-  const response     = await fetch('/opendir', options)
+  const response     = await fetch('/opendir', options);
   const responsedata = await response.json();
   setTitle(responsedata.newdir);
   switch (responsedata.type){
@@ -69,7 +78,7 @@ async function fetchFiles(foldername){
       openFile(responsedata);
       break;
     case "image":
-      // openFile(resdata);
+      openImage(responsedata);
       break;
     default:
       break;

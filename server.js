@@ -9,8 +9,9 @@ const readDirAsync  = util.promisify(fs.readdir );
 
 const app = express();
 const port = 3000;
-// const rootdir = "/";
-const rootdir = __dirname;
+const rootdir = "/";
+// const rootdir = __dirname;
+// const rootdir = "/home/casper/kode/fsharp/interpreter"
 
 app.use(express.static("."));
 app.use(express.json({limit: '1mb'}));
@@ -21,9 +22,11 @@ function getExtension(absolutepath){
   return path.extname(absolutepath).substring(1);
 }
 
-function getFiletype(stat){
+function getFiletype(stat, relativepath){
   if (stat.isFile()){
-    return "textfile";
+    const img = ["png", "jpg", "jpeg", "bmp", "gif", "apng", "svg", "ico"];
+    const ext = getExtension(relativepath);
+    return img.includes(ext) ? "image" : "textfile";
   }
   else if (stat.isDirectory()){
     return "directory";
@@ -31,16 +34,19 @@ function getFiletype(stat){
   return "invalid";
 }
 
+function getAbsolutepath(relativepath){
+  const absolutepath = path.join(rootdir, relativepath);
+  return decodeURI(absolutepath); //To handle spaces in path
+}
+
 app.post('/opendir', async (req, res) => {
 
   const relativepath = path.normalize(req.body.relativepath);
-  console.log("Relative: " + relativepath);
-  const absolutepath = path.join(rootdir, relativepath);
-  console.log("Absolute: " + absolutepath);
+  const absolutepath = getAbsolutepath(relativepath);
 
   try{
     const stat = await statAsync(absolutepath);
-    switch (getFiletype(stat)){
+    switch (getFiletype(stat, relativepath)){
       case "textfile" :
         const contents = await readFileAsync(absolutepath, "utf8");
         res.json({type: "textfile", newdir: relativepath, data: contents});
@@ -49,6 +55,10 @@ app.post('/opendir', async (req, res) => {
       case "directory": 
         const files = await readDirAsync(absolutepath);
         res.json({type: "directory", newdir: relativepath, data: files});
+        break;
+      
+      case "image":
+        res.json({type: "image", newdir: relativepath});
         break;
 
       default:
@@ -62,3 +72,19 @@ app.post('/opendir', async (req, res) => {
   }
 });
 
+
+app.get('/image/*', (req, res) => {
+  const url = (req.originalUrl).split("/image/")[1];
+  const relativepath = path.normalize(url);
+  const absolutepath = getAbsolutepath(relativepath);
+  res.sendFile(absolutepath);
+});
+
+
+
+
+
+
+
+
+// Move client-code to a lower folder.

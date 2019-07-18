@@ -9,6 +9,6 @@ the "rootdir" constant in server.js.
 
 # To-do list
 - [ ] File editing
-- [ ] Image support
+- [X] Image support
 - [ ] File download
 - [ ] File upload
