@@ -9,11 +9,11 @@ const readDirAsync  = util.promisify(fs.readdir );
 
 const app = express();
 const port = 3000;
-const rootdir = "/";
-// const rootdir = __dirname;
-// const rootdir = "/home/casper/kode/fsharp/interpreter"
+// const rootdir = "/";
+const rootdir = __dirname;
+// const rootdir = "/home/casper/Pictures";
 
-app.use(express.static("."));
+app.use(express.static("./client/"));
 app.use(express.json({limit: '1mb'}));
 
 app.listen(port, () => console.log(`Listening to port ${port}`));
@@ -39,7 +39,7 @@ function getAbsolutepath(relativepath){
   return decodeURI(absolutepath); //To handle spaces in path
 }
 
-app.post('/opendir', async (req, res) => {
+app.post('/open', async (req, res) => {
 
   const relativepath = path.normalize(req.body.relativepath);
   const absolutepath = getAbsolutepath(relativepath);

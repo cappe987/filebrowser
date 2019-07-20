@@ -67,7 +67,7 @@ async function fetchFiles(foldername){
     body: JSON.stringify(data)
   };
 
-  const response     = await fetch('/opendir', options);
+  const response     = await fetch('/open', options);
   const responsedata = await response.json();
   setTitle(responsedata.newdir);
   switch (responsedata.type){
