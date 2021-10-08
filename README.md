@@ -1,9 +1,9 @@
 # File Browser
 ## About
-A file browser made using node.js
+**File Browser** is a file browser made using Node.JS.
 
 ## How to use
-Install node.js (Linux)
+Install Node.JS (Linux)
 ```
 sudo apt update
 sudo apt install nodejs
