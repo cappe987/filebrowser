@@ -4,18 +4,15 @@
   border-radius: 5px;
   margin: auto;
   width: 40%;
-
-  box-shadow: 0px 0px 0px 3px inset #AAA;
-
-  background-color: #EEEEEE
-  
+  box-shadow: 0px 0px 0px 3px inset #aaa;
+  background-color: #eeeeee;
 }
 
 textarea {
   font-size: 14px;
-  font-family: 'Courier', Courier, monospace;
+  font-family: "Courier", Courier, monospace;
   font-weight: bold;
-  background-color: #EEE;
+  background-color: #eee;
   resize: none;
   /* box-shadow: 0px 0px 0px 0px inset #AAA; */
   border: none;
@@ -33,7 +30,7 @@ body {
   margin: auto;
   margin-bottom: 1em;
   width: 40%;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   text-align: center;
 }
 
@@ -42,7 +39,7 @@ body {
   margin: auto;
   margin-bottom: 1em;
   width: 40%;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   text-align: center;
 }
 
@@ -53,7 +50,7 @@ body {
   background: none;
   border: none;
   height: 2em;
-  font-family: 'Courier', Courier, monospace;
+  font-family: "Courier", Courier, monospace;
 }
 
 .file {
@@ -63,13 +60,11 @@ body {
   text-align: left;
   padding: 5px;
   padding-left: 10px;
-  background-color: #EEE;
+  background-color: #eee;
 
   font-size: 16px;
 
-  border: none; 
-
-  
+  border: none;
 }
 
 .content {
@@ -78,19 +73,18 @@ body {
 
 .file:hover {
   /* border-radius: 5px; */
-  background: #AAA;
-  
+  background: #aaa;
 }
 
 h1 {
   padding-top: 10px;
   padding-bottom: 10px;
-  font-family: 'Courier', Courier, monospace;
+  font-family: "Courier", Courier, monospace;
   font-size: 40px;
 }
 
 h2 {
-  font-family: 'Courier', Courier, monospace;
+  font-family: "Courier", Courier, monospace;
   font-size: 30px;
   line-height: 0px;
 }
