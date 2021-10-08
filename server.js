@@ -9,9 +9,7 @@ const readDirAsync = util.promisify(fs.readdir);
 
 const app = express();
 const port = 3000;
-// const rootdir = "/";
 const rootdir = __dirname;
-// const rootdir = "/home/casper/Pictures";
 
 app.use(express.static("./client/"));
 app.use(express.json({ limit: '1mb' }));
