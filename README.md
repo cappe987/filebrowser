@@ -23,12 +23,14 @@ node server.js
 # Todo List
 
 - [X] Image support
-- [ ] File editing
-- [ ] File download
-- [ ] File upload
-- [ ] Tree view
-- [ ] Favorites folder
-- [ ] Fuzzy searcher - Levenshtein distance?
-- [ ] Colors and themes for frontend - color depending on filetype
-- [ ] Docker?
-- [ ] Electron?
+- [ ] File Editing
+- [ ] File Download
+- [ ] File Upload
+- [ ] Tree View
+- [ ] Favorites Folder
+- [ ] Fuzzy Searcher 
+  - [ ] Levenshtein Distance
+- [ ] Colors and Themes For Frontend 
+  - [ ] Color Depending On Filetype 
+- [ ] Docker
+- [ ] Electron
