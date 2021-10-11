@@ -1,5 +1,4 @@
-
-function setTitle(text){
+function setTitle(text) {
   const title = document.getElementById("currentDir");
   title.textContent = "";
   const newtitle = document.createElement("h1");
@@ -16,14 +15,14 @@ function createFileButton(filename, fetchstring = filename) {
   return button;
 }
 
-function listdir(data){
+function listdir(data) {
   const div = document.getElementById("content");
 
   div.innerHTML = ""
   const back = createFileButton("..", "/..");
   div.appendChild(back);
 
-  if (data.data != undefined){
+  if (data.data != undefined) {
     data.data.forEach(f => {
       const button = createFileButton(f);
       div.appendChild(button);
@@ -31,7 +30,7 @@ function listdir(data){
   }
 }
 
-function openFile(data){
+function openFile(data) {
   const div = document.getElementById("content");
   div.innerHTML = ""
   // const lines = data.filecontent.split("\n").length;
@@ -44,7 +43,7 @@ function openFile(data){
   div.appendChild(textbox);
 }
 
-function openImage(data){
+function openImage(data) {
   const div = document.getElementById("content");
   div.innerHTML = ""
 
@@ -55,9 +54,9 @@ function openImage(data){
   div.appendChild(img);
 }
 
-async function fetchFiles(foldername){
+async function fetchFiles(foldername) {
   const current = document.getElementById("currentDir").textContent;
-  const data = {relativepath: current + "/" + foldername};
+  const data = { relativepath: current + "/" + foldername };
 
   const options = {
     method: 'POST',
@@ -67,10 +66,10 @@ async function fetchFiles(foldername){
     body: JSON.stringify(data)
   };
 
-  const response     = await fetch('/open', options);
+  const response = await fetch('/open', options);
   const responsedata = await response.json();
   setTitle(responsedata.newdir);
-  switch (responsedata.type){
+  switch (responsedata.type) {
     case "directory":
       listdir(responsedata);
       break;
