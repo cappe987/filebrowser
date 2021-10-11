@@ -16,6 +16,7 @@ node server.js
 ```
 The server is now accessible through the URL `localhost:3000`. The browser will now let you freely browse through your files, starting from the directory specified in the `rootdir` constant in server.js.
 
+# To-do list
 - [ ] File Editing
 - [X] Image support
 - [ ] File Download
