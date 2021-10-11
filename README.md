@@ -23,8 +23,7 @@ The server is now accessible through the URL `localhost:3000`. The browser will 
 - [ ] File Upload
 - [ ] Tree View
 - [ ] Favorites Folder
-- [ ] Fuzzy Searcher 
-- [ ] Levenshtein Distance
+- [ ] Fuzzy Searcher - Levenshtein Distance
 - [ ] Colors and Themes For Frontend 
 - [ ] Color Depending On Filetype 
 - [ ] Docker
